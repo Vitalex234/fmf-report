@@ -18,7 +18,7 @@ ENV SUPERVISOR_VERSION=4.2.2
 ARG PHP_VERSION
 ENV PHP_VERSION=$PHP_VERSION
 
-# Tweaks to give Apache/PHP write permissions to the app
+# Tweaks to give Apache/PHP write permissions to the public
 RUN usermod -u ${BOOT2DOCKER_ID} www-data && \
     usermod -G staff www-data && \
     useradd -r mysql && \
@@ -74,15 +74,15 @@ ENV MYSQL_PASS:-$(pwgen -s 12 1)
 ADD supporting_files/apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
-# Configure /app folder with sample app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-ADD app/ /app
+# Configure /public folder with sample public
+RUN mkdir -p /app/app && rm -fr /var/www/html && ln -s /app/app /var/www/html
+ADD ./ /app
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
 ENV PHP_POST_MAX_SIZE 10M
 
-# Add volumes for the app and MySql
+# Add volumes for the public and MySql
 VOLUME  ["/var/lib/mysql", "/app" ]
 
 EXPOSE 80 3306

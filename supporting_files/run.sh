@@ -69,9 +69,9 @@ if [ -n "$VAGRANT_OSX_MODE" ];then
     groupmod -g ${DOCKER_USER_GID} staff
 else
     echo "Allowing Apache/PHP to write to the app"
-    # Tweaks to give Apache/PHP write permissions to the app
+    # Tweaks to give Apache/PHP write permissions to the public
     chown -R www-data:staff /var/www
-    chown -R www-data:staff /app
+    chown -R www-data:staff /public
 fi
 
 echo "Allowing Apache/PHP to write to MySQL"
